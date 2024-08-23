@@ -43,11 +43,11 @@ There are a couple of hurdles one has to reconcile or overcome when it comes tim
 
 Where our journey begins is what I call the heart of the CSDM and that is services. (Note: The CMDB comes in later. The CMDB is important, but it not the starting point to root the CSDM from.)
 
-I am going to forgo any attempt to define what a service is or is not. There are a great many smart noodlers out there, far smarter than I, that can provide an eloquent definition what a service is. I will provide the implementer’s version.
 
 If you draw a paycheck from your employer, then your employer is paying you to perform a service for the organization. If a solution has an invoice (one-time or re-occurring) or requires time and effort, that solution is providing a service. 
 
 __TLDR;__ a service is anything in the organization that takes time or money.
+I am going to forgo any attempt to define what a service is or is not. There are a great many smart noodlers out there, far smarter than I, that can provide an eloquent definition what a service is. I will provide the implementer’s version.
 
 Everyone provides a service, from the highest ranking C-level suite to the office cleaning staff, each provides a defined service. It is our job to quantify what that service is and create a definition of the service in ServiceNow.
 
@@ -167,17 +167,18 @@ Typically, unique names are not a problem when defining records. But, what happe
 
 - you have multiple teams or sub-teams that provide tiered support?
 - you have multiple IT departments within multiple companies within the same organization?
+- you have multiple teams in different locales?
 
-To address these issues, devise a standard which is appended to service definition names to make them unique. Consider using additional attributes to differentiate service names. For example, you could include a unique identifier, such as a department code or location, in the service name.
+Though service records contain various fields, the services cannot cover all the various scenarios that make your company unique. The go to for some is to create custom fields and there are cases where this would be applicable. If you can forsee duplicate service names, consider using additional attributes to differentiate services by their names. 
 
-I prefer a _”pill”_ or _”block”_ approach for naming standards. A _”pill”_ uses parentheses and a _”block”_ uses square brackets to append tags to service names to make them unique. Within the pill or block the standard of tags can be defined and set apart.  
+I prefer a _”pill”_ or _”block”_ approach for naming standards. A _”pill”_ uses parentheses and a _”block”_ uses square brackets to append tags to service names to make them unique. I have not run into a case where I would use both a pill and block style for naming convensions on the same platform; either will suffice in ServiceNow. Within the pill or block the standard of tags can be defined and set apart.  
 
-The standards below are examples based on needing to support 8 different clients on the same instance of ServiceNow. Your mileage will vary based on your organization’s structures.
+The standards below are examples based on needing to support 8 different clients on the same instance of ServiceNow. Your mileage will vary based on your organization’s structures. Take this an idea and implement your own version that best fits your organization's style.
 
 ##### Scenario
-The following scenario is used when showing examples of the various services to be defined.
+I will be using the following scenario as an example for defining various services.
 
-A hypothetical organization is comprised of 3 companies (ABA, CAC, and DEL) with each having their own IT department. Each of these companies have an Identity and Access Management (IAM) team. All three companies use a multi-service provider (MSP) named ZET to handle all tier 1 service desk calls for IAM requests and incidents. The ABA company has outsourced tier 2 support to external vendor QED. And then all 3 companies provide final support.  
+A hypothetical organization is comprised of 3 companies (COM1, COM2, and COM3) with each having their own IT department. Each of these companies have an Identity and Access Management (IAM) team. All three companies use a multi-service provider (MSP1) to handle all tier 1 service desk calls for IAM requests and incidents. The COM1 company has outsourced tier 2 support to external vendor EXT1. And then all 3 companies provide final support.  
 
 #### Technical Service
 
@@ -190,17 +191,17 @@ where:
 - __\<company stock symbol\>__ is the company stock symbol
 - __\<department code\>__ is the department code or symbol
 
-Department code is needed for similar technical service names within a company. As an example “Security” could be used for both physical security at facilities and cybersecurity for IT. “Engineering” could be used for manufacturing, research and design, and PLM for IT. 
+Department code is needed for similar technical service names within a company as many departments have simalar service names. As an example “Security” could be used for both physical security at facilities and cybersecurity for IT. “Engineering” could be used for manufacturing, R&D, and PLM for IT. 
 
 ##### Scenario
 
-In this scenario, notice how there are no definitions at the Technical Service level for external suppliers ZET and QED. The reason is rarely are external suppliers accountable at the business level. Even though they provide a service for the organization, they are replaceable.
+In this scenario, notice how there are no definitions at the Technical Service level for external suppliers MSP01 and EX01. The reason is rarely are external suppliers accountable at the business level. Even though they provide a service for the organization, they are replaceable. Technical Service[HERE I AM]
 
 | Technical Service                         | Support Group |
 |-----------------------------—-------------|---------------|
-| Identity and Access Management (ABA\|ITN) | SN_ABA_IAM    |
-| Identity and Access Management (CAC\|ITN) | SN_CAC_IAM    |
-| Identity and Access Management (DEL\|ITN) | SN_DEL_IAM    |
+| Identity and Access Management (ABA\|ITN) | SN_C01_IAM    |
+| Identity and Access Management (CAC\|ITN) | SN_C02_IAM    |
+| Identity and Access Management (DEL\|ITN) | SN_C03_IAM    |
 
 #### Technical Service Offering 
 
@@ -217,14 +218,12 @@ Regarding tier number, tiers are integers that start at 1 and goes to N. When de
 
 ##### Scenario
 
-| Technical Service Offering               | Support Group |
+| Technical Service Offering                | Support Group |
 |------------------------------------------|---------------|
 | Active Directory - Accounts (ENT\|T1)    | Zeta          |
-| Active Directory - Accounts  (ALP\|T2) | Delta         |
-| Active Directory - Accounts  (ALP\|T3) | Alpha         |
+| Active Directory - Accounts  (ALP\|T2)   | Delta         |
+| Active Directory - Accounts  (ALP\|T3)   | Alpha         |
 | Identity and Access Management (BET\|T2) | Beta          |
 | Identity and Access Management (GAM\|T2) | Gamma         |
 
 __NOTE__: See section _Support Groups_ regarding proper naming conventions.
-
-# SAVING DRAFT 3
