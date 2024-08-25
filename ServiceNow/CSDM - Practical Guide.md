@@ -3,19 +3,19 @@
 # CSDM in Practice
 A practical guide implementing ServiceNow CSDM
 
-Version 20240813 
+Version 20240825 
 
 # Safe Harbor Statement
 
-This guide is <ins>a way</ins> to implement the Common Service Data Model (CSDM) on the ServiceNow platform. I am not bold enough to say this guide is <ins>the way</ins>. The CSDM framework is an ever evolving design modeling structure by engineers at ServiceNow, if anyone can state the exact way to implement the CSDM it is them. So, your mileage may vary on what you can take away from this guide. Your best path forward is listening, understanding, and collaborating with others.
+This guide provides one approach to implementing the Common Service Data Model (CSDM) on the ServiceNow platform. However, I'm not bold enough to claim that it's the definitive way. The CSDM framework continually evolves through the efforts of engineers at ServiceNow, and if anyone can state the exact way to implement CSDM, it's them. Therefore, your mileage may vary in terms of takeaways from this guide. Your best path forward lies in listening, understanding, and collaborating with others.
 
 # About
 
-This guide comes from experience gained from my employer; which will stay unsaid. The examples are real world everyday practical implementation examples that anyone can use. What you take away from this guide is hopefully ideas how to implement the CSDM in your organization.
+As someone working at a moderately large manufacturing multi-conglomerate, I've had the opportunity to collaborate with eight distinct business units (which I refer to as clients). Each client operates independently within the broader context of the business, with its own IT department. My role involves ensuring that all eight clients use the same instance of ServiceNow.
 
-I have the fortune to work at a moderately large manufacturing multi-conglomerate that has multiple (8 at this time) distinct business units (which I call clients as I am in corporate IT) covering a wide range of brands and products. What is unique about the business arrangement is each client is federated entity within the broader context of the business, with each client possessing their own independent IT department. I work at the corporate office and my job to to ensure that the enterprise (aka 8 clients) collaborate on the same instance of ServiceNow. 
+In this guide, I'll share real-world examples of how to implement the Configuration and Service Data Model (CSDM) effectively. Whether you're part of a large organization or a smaller team, these insights can help streamline your processes and enhance collaboration. 
 
-__TLDR;__ the experience of this guide is built on getting 8 different clients, that see the world differently, have opposing agendas, and barely aligned priorities into using a single instance of ServiceNow.
+__TL;DR:__ In this guide, I share practical insights on implementing the Configuration and Service Data Model (CSDM) within your organization. Drawing from real-world examples, I discuss how to streamline processes and enhance collaboration across distinct business units. Whether you're part of a large enterprise or a smaller team, these insights can help you effectively use ServiceNow.
 
 # Introduction
 
@@ -46,7 +46,7 @@ Where our journey begins is what I call the heart of the CSDM and that is servic
 
 If you draw a paycheck from your employer, then your employer is paying you to perform a service for the organization. If a solution has an invoice (one-time or re-occurring) or requires time and effort, that solution is providing a service. 
 
-__TLDR;__ a service is anything in the organization that takes time or money.
+__TL;DR:__ a service is anything in the organization that takes time or money.
 I am going to forgo any attempt to define what a service is or is not. There are a great many smart noodlers out there, far smarter than I, that can provide an eloquent definition what a service is. I will provide the implementer’s version.
 
 Everyone provides a service, from the highest ranking C-level suite to the office cleaning staff, each provides a defined service. It is our job to quantify what that service is and create a definition of the service in ServiceNow.
@@ -82,7 +82,7 @@ There are 2 different service definitions per service type listed above; service
 
 So let’s simplify what a Service and Service Offering are. A Service is a grouping of Service Offerings. A Service Offering is the lowest form of service for its type. Nothing complicated, but you can make it as complicated if you so desire.
 
-__TLDR;__ services are the buckets and Service Offerings are the marbles in the buckets. 
+__TL;DR:__ services are the buckets and Service Offerings are the marbles in the buckets. 
 
 It can get complicated because technically you chain together Services and Service Offerings as they share a base table with a parent field. On one hand, this offers flexibility to model complex models of services. On the other hand developing, maintaining, supporting, and reporting can become quite tedious very quickly.
 
@@ -114,11 +114,11 @@ Examples:
 
 There are a couple of reasons we set this up this way.
 - __Easy to understand standard__ - A simple relationship between all Services and Service Offerings is straightforward. Once you get into multiple levels the maintenance of the organization of the records can get confusing. ServiceNow allows for a complex tree-structure when it comes to all services, the problem becomes obvious overtime, as roles and organizations change. 
-    __TLDR;__ you are smart, but your predecessor might not be. So keep it simple.
+    __TL;DR:__ you are smart, but your predecessor might not be. So keep it simple.
 - __Simple lookups__ - There is a balance between easy to search and easy to find. They are two completely different definitions in the context of user experience (UX). On one hand, having the scroll through volumes of records can be very tedious. And then also having to hunt for what you are looking for with multiple mouse-clicks can also be tedious as well. By having a two-tier relationship between Services and Service Offerings you are addressing both the search and find aspect of UX. Searches can easily be narrowed down to two searches; one for the right Service and one for the right Service Offering. Instead of complex tree searches. Finding through the act of mouse-clicks is narrowed down to two mouse-clicks.
-    __TLDR;__ save yourself from headaches later on when developing solutions that rely on the CSDM records.
+    __TL;DR:__ save yourself from headaches later on when developing solutions that rely on the CSDM records.
 - __Easier reporting__ - An area that constantly gets overlooked is reporting. You want reports to represent information equally and consistently. By having a two-tier relationship between Services and Service Offerings, reports will be far easier to understand without having to understand embedded sub-services; which in the long run, we have found really does not result in better outcomes or decisions.
-    __TLDR;__ complex CSDM models equals complex reporting.
+    __TL;DR:__ complex CSDM models equals complex reporting.
 
 __Key Point:__ Keep Service and Service Offerings simple. The CMDB is already complex enough, do not make more work for yourself by making the the CSDM complex too.
 
@@ -137,7 +137,7 @@ Here are a few examples of common mistakes.
 | Provision SAP Account  | SAP Account               |
 | Security Remediation   | Attack Surface Management |
 
-__TLDR;__ service definitions should only contain nouns and catalog items should be the verbs.
+__TL;DR:__ service definitions should only contain nouns and catalog items should be the verbs.
 
 __Leadership Alert:__ When setting up Services and Service Offerings, the whole noun concept is a hard concept for leadership to grasp. Leadership would want to create services with verbs in the definition. For example adding “grant”, “revoke“, “reset”, etc. etc. into the service definition name. The problem is using verbs would create an avalanche of service offerings. Because then there is “provision”, “reclaim”, “add”, “delete”, “security remediation”, “patch”, “update”, “upgrade”, and the list continues on and on. Then trying to stay consistent becomes something to manage as well, when do you use “add”, “provision”, or “create”? Ultimately, leadership wants to ensure they can see what actions (verbs) their teams were performing. Explain how catalog items capture the verbs and how they would generate reports based on request items. 
 
