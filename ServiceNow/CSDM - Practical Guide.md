@@ -19,39 +19,45 @@ __TL;DR:__ In this guide, I share practical insights on implementing the Configu
 
 # Introduction
 
-One of my favorite post movie ending clips comes from the Walt Disney movie Finding Nemo. In the clip a band of fish escape from their aquarium back to the ocean, only to find they are still trapped in their plastic baggies floating on the ocean and the scene ends with the question “now what?” Whether you are a customer or partner, we have all been there. After the flashy presentations, dazzling demos, and the perversity digital ink has dried, the time comes to actually implement what you bought.
+One of my favorite post-movie ending scenes comes from the Walt Disney film _Finding Nemo_. In this clip, a band of fish escapes from their aquarium and returns to the ocean, only to discover that they are still trapped in their plastic baggies floating ontop of the water. The scene ends with the poignant question, 'Now what?' The reason why this scene resonates is we have all been there. Whether you're a customer or a partner, we've all been there. After the flashy presentations, dazzling demos, and once the ink has dried on the digital contracts, it's time to actually implement what you've purchased.
 
-The architects and engineers of ServiceNow has helped put together a really great model called the Common Service Data Model (CSDM) to help organize and better understand the various services your organization has to offer. The CSDM ties into many various aspects of the ServiceNow platform that I am still either implementing or discovering myself.
+Anytime a solution is purchased, the number 1 question on the minds of leadership is "when will the solution be up and running?" Ultimately they want to see return on value as soon as possible. Now of course the answer varies on many factors like leadership involvement, staff knowledge and utilization of external ServiceNow partners. Now if you are reading this you are either in the position of pre-implementation or post implementation of ServiceNow. The later is a bit more effort to make changes, but it is possible and I will lay out strategies where it makes sense.  
+
+The architects and engineers at ServiceNow have developed an excellent model called the Common Service Data Model (CSDM). This model helps organize and enhance our understanding of the various services offered by our organization and the best place to start from when implementing the ITSM module of ServiceNow. The CSDM does integrate with other various modules of the ServiceNow platform as well, which I am still exploring and implementing.
 
 ## Baseline
 
-If you do not know anything about the CSDM, I recommend you first search for it online and read what the authors’ have to say. I cannot provide a link because the way ServiceNow keeps their documentation evergreen and any link will be outdated without notice. A simple “ServiceNow CSDM” search will suffice. From there, you can get all the formal definitions and explanations directly from the source. No reason for me to copy-paste what is already publicly and freely provided.
+If you are unfamilar with ServiceNow's CSDM, I recommend you first search for it online and read what the authors’ have to say, before you read what this guide has to offer. I cannot provide a link because the way ServiceNow keeps their documentation evergreen and any link will be outdated without notice. A simple “ServiceNow CSDM” search will suffice. From there, you can get all the formal definitions and explanations directly from the source. No reason for me to copy-paste what is already publicly and freely provided.
 
 ## Boiled Down Baseline
 
-The CSDM is basically the org chart for business operations. Just like many organizations have a personnel org chart that shows the connections between people, the CSDM is a model to show the relationships between business operations. The CSDM can link the tiniest asset, like a thermostat on the wall of a shop floor all the way to business operations at the C-level.
+The Common Service Data Model (CSDM) serves as an organizational framework for business operations. Analogous to personnel org charts that depict connections between individuals, the CSDM provides a model to illustrate relationships within business processes. From the smallest assets—such as a shop floor thermostat—to high-level business operations at the C-suite, the CSDM establishes links across the entire spectrum.
+
+In essence, the CSDM offers a holistic view of an organization's assets, services, and their interdependencies, facilitating efficient management and strategic alignment. If you'd like further details, I recommend referring to authoritative resources on the topic.
 
 ## Before We Begin
 
-There are a couple of hurdles one has to reconcile or overcome when it comes time to implement CSDM within your ServiceNow instances and here is what I have found to be true.
+- The Common Service Data Model (CSDM) is an evolving framework. Currently, the CSDM stands at version 4, with version 5 in draft. The crucial lesson here is to remain adaptable—neither fixated on completion nor frustrated by new versions announced by ServiceNow.
+   
+- Individuals rarely approach a project without preconceptions. Life experiences shape our perspectives. Expect discussions comparing CSDM to other product models. The key lies in active listening to requirements and avoiding direct emulation of other products within the ServiceNow ecosystem. Let ServiceNow maintain its unique identity.
+   
+- Leadership may underestimate the complexity of CSDM setup. Exercise patience and maintain a calm, matter-of-fact demeanor. Educate them on the process while emphasizing realistic expectations.
 
-- The CSDM is constantly maturing. At the time of this sentence, the CSDM is at version 4 with version 5 in draft. (I expect version 5 is have AI sprinkled in like sprinkles on cupcakes.) The key takeaway from this is to never get caught up in either being finished or frustrated when ServiceNow announces a new CSDM version.
-- Very rarely do people come into a body of work with no preconceived ideas. The baggage of life experiences is always present. You will have conversations around how other products have similar CSDM model and how other products do it differently. The key takeaway is hear them out by listening to their requirements and do not emulate another product in ServiceNow. Let ServiceNow, be ServiceNow.
-- Leadership will not understand or leadership will have preconceived idea how easy this will be to setup. The key takeaway is patience and keep a calm matter of fact attitude.
+Remember, successful CSDM implementation involves collaboration, adaptability, and clear communication.
 
-# Services
+# The Core of CSDM: Understanding Services
 
-Where our journey begins is what I call the heart of the CSDM and that is services. (Note: The CMDB comes in later. The CMDB is important, but it not the starting point to root the CSDM from.)
+At the heart of the Common Service Data Model (CSDM) lies the concept of services. While the Configuration Management Database (CMDB) plays a crucial role, it isn't the initial starting point for grounding the CSDM.
 
+__Sidebar:__ If you receive a paycheck from your employer, you are compensated for providing a service to the organization. Whether it's a solution invoiced periodically or a task requiring time and effort, it falls under the umbrella of services.
 
-If you draw a paycheck from your employer, then your employer is paying you to perform a service for the organization. If a solution has an invoice (one-time or re-occurring) or requires time and effort, that solution is providing a service. 
+**TL;DR:** A service encompasses anything within the organization that consumes time or financial resources.
 
-__TL;DR:__ a service is anything in the organization that takes time or money.
-I am going to forgo any attempt to define what a service is or is not. There are a great many smart noodlers out there, far smarter than I, that can provide an eloquent definition what a service is. I will provide the implementer’s version.
+Rather than attempting an exhaustive definition, let's focus on practical implementation. From top-level executives to office custodians, everyone contributes a distinct service. Our task is to precisely define and document these services within the ServiceNow framework.
 
-Everyone provides a service, from the highest ranking C-level suite to the office cleaning staff, each provides a defined service. It is our job to quantify what that service is and create a definition of the service in ServiceNow.
+Remember, clarity and alignment are key as we map out services in ServiceNow.
 
-__Sidebar:__ There is a scene in the 1999 movie _Office Space_, where two auditors, played by John C. McGinley and Paul Wilson, are interviewing an office worker, played by Richard Riehle, where they are trying to better understand everyone’s role within the company. It is a hilarious scene where John and Paul’s characters are trying to understand what Richard’s character actually does for the company. After a back and forth banter, John’s character finally asks _“what is it that you actually do here?”_ And Richard’s character goes into a tailspin rant. If you have not seen the movie, then your homework is to watch that movie before continuing with this guide.
+__Sidebar:__ In the 1999 movie _Office Space_, two consultants—Bob Slydell (played by John C. McGinley) and Bob Porter (played by Paul Wilson)—interview an office worker named Tom Symkowski (played by Richard Riehle). Their goal is to better understand everyone's role within the company. The scene is hilariously depicted as the two Bobs try to grasp what Tom actually does. After a back-and-forth banter, Bob Porter finally asks, 'What is it that you actually do here?' Tom then launches into an unhinged tailspin rant. If you haven't seen the movie, consider watching it before continuing with this guide."
 
 ## Service Types
 
