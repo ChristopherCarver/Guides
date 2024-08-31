@@ -21,72 +21,79 @@ __TL;DR:__ In this guide, I share practical insights on implementing the Configu
 
 One of my favorite post-movie ending scenes comes from the Walt Disney film _Finding Nemo_. In this clip, a band of fish escapes from their aquarium and returns to the ocean, only to discover that they are still trapped in their plastic baggies floating ontop of the water. The scene ends with the poignant question, 'Now what?' The reason why this scene resonates is we have all been there. Whether you're a customer or a partner, we've all been there. After the flashy presentations, dazzling demos, and once the ink has dried on the digital contracts, it's time to actually implement what you've purchased.
 
-Anytime a solution is purchased, the number 1 question on the minds of leadership is "when will the solution be up and running?" Ultimately they want to see return on value as soon as possible. Now of course the answer varies on many factors like leadership involvement, staff knowledge and utilization of external ServiceNow partners. Now if you are reading this you are either in the position of pre-implementation or post implementation of ServiceNow. The later is a bit more effort to make changes, but it is possible and I will lay out strategies where it makes sense.  
+Anytime a solution is purchased, the number 1 question on the minds of leadership is "when will the solution be up and running?" Ultimately they want to see return on investment as soon as possible. Now of course the answer varies on many factors like leadership involvement, staff knowledge and utilization of external ServiceNow implementation partners. Now if you are reading this you are either in the position of pre-implementation or post implementation of ServiceNow. The later is a bit more effort to make changes, but it is possible and I will lay out strategies where it makes sense.  
 
 The architects and engineers at ServiceNow have developed an excellent model called the Common Service Data Model (CSDM). This model helps organize and enhance our understanding of the various services offered by our organization and the best place to start from when implementing the ITSM module of ServiceNow. The CSDM does integrate with other various modules of the ServiceNow platform as well, which I am still exploring and implementing.
 
+## Why
+
+Before we begin, it's important to address the "why" question: Why go through the effort of setting up the Common Service Data Model (CSDM) in ServiceNow? The best way to answer this is through my own experience.
+
+Prior to adopting ServiceNow, my employer faced decades of challenges with basic IT practices that negatively impacted customer satisfaction and caused long-term internal friction. One of the most noticeable issues was ticket misrouting, which led to delays of weeks, and sometimes even months, in delivering services. This frustrated customers, who felt that IT was disorganized as their tickets were passed between multiple teams. It was clear that we couldn't carry the "sins of the past" into the future with ServiceNow.
+
+I had an incredible mentor, and upon his retirement, I asked him, "What is the biggest hurdle IT has yet to overcome during your tenure at the organization?" His response was, "The CFO has yet to understand the value IT brings to the organization." As a cost center, IT departments are often seen as only consuming money rather than generating it. In a large and diverse organization, this perception is exacerbated as IT costs continue to rise.
+
+I started with a simple two-part problem statement: "How do we prevent ticket misrouting?" and "How do we demonstrate IT's value?" The CSDM provided all the necessary components and definitions but lacked specific instructions. I filled in the gaps based on personal experience, intuition, and a dedicated team focused on solving these fundamental issues. As a result, our ticket misrouting is now at an all-time low, and we have developed reports that clearly show the value IT brings to the organization.
+
+So, let's roll up our sleeves and get to work.
+
 ## Baseline
 
-If you are unfamilar with ServiceNow's CSDM, I recommend you first search for it online and read what the authors’ have to say, before you read what this guide has to offer. I cannot provide a link because the way ServiceNow keeps their documentation evergreen and any link will be outdated without notice. A simple “ServiceNow CSDM” search will suffice. From there, you can get all the formal definitions and explanations directly from the source. No reason for me to copy-paste what is already publicly and freely provided.
+If you are unfamilar with ServiceNow's CSDM, I recommend you first search for it online and read what the authors’ have to say, before you read what this guide has to offer. I cannot provide a link because the way ServiceNow keeps their documentation evergreen and any link will be outdated without notice. A simple “ServiceNow CSDM” Internet search will suffice. From there, you can get all the formal definitions and explanations directly from the source. No reason for me to copy-paste what is already publicly and freely provided.
 
 ## Boiled Down Baseline
 
-The Common Service Data Model (CSDM) serves as an organizational framework for business operations. Analogous to personnel org charts that depict connections between individuals, the CSDM provides a model to illustrate relationships within business processes. From the smallest assets—such as a shop floor thermostat—to high-level business operations at the C-suite, the CSDM establishes links across the entire spectrum.
+The CSDM serves as an organizational framework for business operations. Analogous to personnel org charts that depict connections between individuals, the CSDM provides a model to illustrate relationships within business processes. From the smallest assets—such as a shop floor thermostat—to high-level business operations at the C-suite, the CSDM establishes links across the entire spectrum.
 
-In essence, the CSDM offers a holistic view of an organization's assets, services, and their interdependencies, facilitating efficient management and strategic alignment. If you'd like further details, I recommend referring to authoritative resources on the topic.
+In essence, the CSDM offers a holistic view of an organization's assets, services, and their interdependencies, facilitating efficient management and strategic alignment. If you'd like further details, I recommend referring to authoritative resources (ServiceNow) on the topic.
 
 ## Before We Begin
 
-- The Common Service Data Model (CSDM) is an evolving framework. Currently, the CSDM stands at version 4, with version 5 in draft. The crucial lesson here is to remain adaptable—neither fixated on completion nor frustrated by new versions announced by ServiceNow.
+The CSDM is an evolving framework. Currently, the CSDM stands at version 4, with version 5 in draft. The crucial lesson here is to remain adaptable—neither fixated on completion nor frustrated by new versions announced by ServiceNow. This is does not mean scrap and rebuild each time. Rather take the time to better understand that various components that make up the CSDM and then stick with a model that best suits your organization.
    
-- Individuals rarely approach a project without preconceptions. Life experiences shape our perspectives. Expect discussions comparing CSDM to other product models. The key lies in active listening to requirements and avoiding direct emulation of other products within the ServiceNow ecosystem. Let ServiceNow maintain its unique identity.
+Individuals rarely approach a project without preconceptions and ideas. Life experiences shape our perspectives and then them to future enhancements. Expect discussions comparing CSDM to other product models. The key lies in active listening to requirements and avoiding emulating other products within the ServiceNow ecosystem. Let ServiceNow maintain its unique identity and move off the other platform.
    
-- Leadership may underestimate the complexity of CSDM setup. Exercise patience and maintain a calm, matter-of-fact demeanor. Educate them on the process while emphasizing realistic expectations.
+Leadership may underestimate the complexity of CSDM setup. Exercise patience and maintain a calm, matter-of-fact demeanor. Educate them on the process while emphasizing realistic expectations. Normally the expectations are around how long this will take. The mileage will vary from organization to organization, but it is common for this to take years to build out from scratch. They key to where to start.
 
 Remember, successful CSDM implementation involves collaboration, adaptability, and clear communication.
 
-# The Core of CSDM: Understanding Services
+# Services
 
-At the heart of the Common Service Data Model (CSDM) lies the concept of services. While the Configuration Management Database (CMDB) plays a crucial role, it isn't the initial starting point for grounding the CSDM.
+At the core of every organization are the services it provides, as these services are the primary way organizations meet the needs of their customers and generate revenue. Whether it's a product-based company offering customer support, a consultancy providing expert advice, or a tech firm delivering software solutions, the services offered are essential to the business's value proposition. This concept is central to the CSDM, which emphasizes that every position, regardless of role, provides a service. 
 
-__Sidebar:__ If you receive a paycheck from your employer, you are compensated for providing a service to the organization. Whether it's a solution invoiced periodically or a task requiring time and effort, it falls under the umbrella of services.
-
-**TL;DR:** A service encompasses anything within the organization that consumes time or financial resources.
-
-Rather than attempting an exhaustive definition, let's focus on practical implementation. From top-level executives to office custodians, everyone contributes a distinct service. Our task is to precisely define and document these services within the ServiceNow framework.
-
-Remember, clarity and alignment are key as we map out services in ServiceNow.
-
-__Sidebar:__ In the 1999 movie _Office Space_, two consultants—Bob Slydell (played by John C. McGinley) and Bob Porter (played by Paul Wilson)—interview an office worker named Tom Symkowski (played by Richard Riehle). Their goal is to better understand everyone's role within the company. The scene is hilariously depicted as the two Bobs try to grasp what Tom actually does. After a back-and-forth banter, Bob Porter finally asks, 'What is it that you actually do here?' Tom then launches into an unhinged tailspin rant. If you haven't seen the movie, consider watching it before continuing with this guide."
+__Sidebar:__ When defining services at your organization, you are going to receive push-back. Remember, everyone that receives a paycheck is being compensated for providing a service to the organization. In the 1999 movie _Office Space_, two consultants—Bob Slydell (played by John C. McGinley) and Bob Porter (played by Paul Wilson)—interview an office worker named Tom Symkowski (played by Richard Riehle). Their goal is to better understand everyone's role within the company to then help with efficiency. The scene is hilariously depicted as the two Bobs try to grasp what Tom actually does. After a back-and-forth banter, Bob Porter finally asks, 'What is it that you actually do here?' Tom then launches into an unhinged tailspin rant. If you haven't seen the movie, consider watching it before continuing with this guide. It is a good representation of whhat is to come.
 
 ## Service Types
 
 There are three primary service types in ServiceNow; application, business, and technical. These three form the broader groupings of services you will define and all are extended from the Configuration Item [cmdb_ci] table.
 
 ### Technical Services
-Before any other CSDM services are defined, I like to define these types of services first. I really do not like ServiceNow’s scant definition of a technical service. When you read the word “technical”, do not think “technology”, think “technically” as in “technically, this is what I know” or “technically, this is what do ” The key is to focus on what do people know or do when defining technical service offerings.
 
-For example, let us say you need to open a ticket requesting help setting up a cubicle for a visiting guest. That is not actually a technology, but a service that is probably provided by either Human Resources, an office/floor manager or a secretary. So you can and should create a technical service called Office Management or Office Resources. Do not jump ahead and think of these as business services, that’s completely different.
+**Technical Services** defines the "what" is being provided as a service. (Notice, I did not include "how", this is important and will come into play later on.) Technical Services should not be interpreted solely as "technology", but rather as "technically", in the sense of "technically, this is what I know" or "technically, this is what I provide." The focus should be on what teams and individuals know or provide when defining technical service offerings. This is not to say Technical Service definitions cannot be technology, they can be as well. For example Microsoft Active Directory can be defined as a Technical Service as that is a service provided through that solution for identity and access management. 
+
+For instance, if you need to open a ticket requesting assistance with setting up a cubicle for a visiting guest, this is not a technology but a service likely provided by the Human Resources department, an office/floor manager, or a administration assistent. Therefore, you can and should create a technical service called Office Management or Office Resources. It is important not to confuse these with business services, as they are entirely different.
 
 ### Application Services
-Application Services have nothing to do with software applications. (I will give you a moment to let that sink in.) Recall how the CSDM is an ever maturing model put forth by ServiceNow? Well, mistakes were made and what is done is done. The name Application Service is not accurately describe the intent by name alone, but the definition and meaning behind it is correct. When ServiceNow choose the word “application”, they meant it in a pure academic sense of the definition “to apply.” I have read one of the early authors of the CSDM lamented they wished they named it System Services, but I do not feel that would have faired better. 
 
-Instead of Application Services, think of them as Deployed Services (though I will not be calling these types of services by that name, this is just to help you see where I am going). Application Services are the deployments (aka instances) of a solution for the organization. Another definition or view is actualizations, as in what is real in practice. 
+**Application Services** are not related to software applications. (Take a moment to let that sink in.) Remember that the CSDM is an evolving and ever maturing framework introduced by ServiceNow. While the term Application Service may not accurately convey its intended meaning, the underlying definition is correct. When ServiceNow chose the term application, they meant it in the academic sense of "to apply." One of the early authors of the CSDM expressed regret over not naming it "System Services," but I believe that would not have been a better choice.
 
-Using the same example above, you need a temporary cubicle for a visitor, but you have three offices; Burbank, London, and Madrid. You can have three Application Services for each office as they are realizations of the organization in three distinct locations. So when a ticket is created the Application Service can be used to help route the ticket to the proper assignment group for each location. 
+Instead of thinking of Application Services as software applications, consider Application Services as Deployed Services (though I will not use this term officially, it helps illustrate the concept). Application Services represent the deployments (or instances) of a solution within the organization. Another way to view them is as actualizations, meaning what is real in practice.
 
-The same can be said for digital solutions as well. Let us say at each of the three office locations, IT has deployed an instance of the timekeeping solution Kronos. Also, the IT department maintains a development (DEV) and user acceptance testing (UAT) instance of Kronos as well. Therefore, there will be 5 Application Service definitions defined in ServiceNow; one for each deployment of Kronos. 
+For example, if you need a temporary cubicle for a visitor and have offices in Burbank, London, and Madrid, you can have three Application Services for each office, representing the organization's presence in these distinct locations. When a ticket is created, the Application Service can help route it to the appropriate assignment group for each location.
+
+The same principle applies to digital solutions. Suppose each of the three office locations has an instance of the timekeeping solution Kronos, and the IT department also maintains development (DEV) and user acceptance testing (UAT) instances of Kronos. In this case, there would be five Application Service definitions in ServiceNow, one for each deployment of Kronos at the office locations (3) and for development and testing (2).
 
 ### Business Services
-Business Services answers the broader question _“what can the organization accomplish?”_ Business Services bundle up all the Technical and Application Services into groupings that answer broader questions. As I like to see them, these are services for director and above to understand. Business Services would be defined as Financial Services, Marketing, Sales, Manufacturing, Legal Services, etc. etc..
 
-While Business Services are important to define to get the larger landscape of the organization, they are typically the last to be defined and the least important in priority. The reason for this is that Technical Services and Application Services are the foundations that make up Business Services. So unless you are starting an organization from scratch, it is better to focus on Technical and Application Services first.
+**Business Services** address the broader question, _“What can the organization accomplish?”_ These services consolidate all Technical and Application Services into groupings that provide comprehensive answers to overarching organizational questions. Essentially, Business Services are designed for understanding at the director level and above. Examples of Business Services include Financial Services, Marketing, Sales, Manufacturing, Legal Services, among others.
+
+While defining Business Services is crucial for understanding the larger landscape of the organization, they are typically the last to be defined and are considered lower in priority. This is because Technical Services and Application Services form the foundational elements that constitute Business Services. Therefore, unless an organization is being established from scratch, it is more effective to focus initially on Technical and Application Services.
 
 ## Service & Service Offerings
 
-There are 2 different service definitions per service type listed above; service and service offering for each. Go read ServiceNow’s definition of what a Service and a Service Offering is. (I’ll wait, no rush.)
+There are two distinct definitions for each service type mentioned above: **Service** and **Service Offering**. For detailed definitions, please refer to ServiceNow’s documentation on what constitutes a Service and a Service Offering¹.
 
-So let’s simplify what a Service and Service Offering are. A Service is a grouping of Service Offerings. A Service Offering is the lowest form of service for its type. Nothing complicated, but you can make it as complicated if you so desire.
+To simplify, a **Service** is a collection of Service Offerings. A **Service Offering** represents the most granular level of service within its category. While the concept is straightforward, it can be expanded in complexity if needed.
 
 __TL;DR:__ services are the buckets and Service Offerings are the marbles in the buckets. 
 
