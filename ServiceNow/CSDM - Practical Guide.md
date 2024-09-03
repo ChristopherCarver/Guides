@@ -6,15 +6,11 @@ A practical guide implementing ServiceNow CSDM
 Version 20240825 
 
 ```mermaid
-flowchart TB
-  subgraph Service
-    subgraph Service Offering A
-    end
-    subgraph Service Offering B
-    end
-    subgraph Service Offering C
-    end
-  end
+graph LR;
+A-->B;
+A-->C;
+B-->D;
+C-->D;
 ```
 
 # Safe Harbor Statement
