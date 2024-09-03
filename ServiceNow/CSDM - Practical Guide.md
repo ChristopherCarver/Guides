@@ -5,6 +5,18 @@ A practical guide implementing ServiceNow CSDM
 
 Version 20240825 
 
+```mermaid
+flowchart TB
+  subgraph Service
+    subgraph Service Offering A
+    end
+    subgraph Service Offering B
+    end
+    subgraph Service Offering C
+    end
+  end
+```
+
 # Safe Harbor Statement
 
 This guide provides one approach to implementing the Common Service Data Model (CSDM) on the ServiceNow platform. However, I'm not bold enough to claim that it's the definitive way. The CSDM framework continually evolves through the efforts of engineers at ServiceNow, and if anyone can state the exact way to implement CSDM, it's them. Therefore, your mileage may vary in terms of takeaways from this guide. Your best path forward lies in listening, understanding, and collaborating with others.
@@ -75,7 +87,7 @@ For instance, if you need to open a ticket requesting assistance with setting up
 
 ### Application Services
 
-**Application Services** are not related to software applications. (Take a moment to let that sink in.) Remember that the CSDM is an evolving and ever maturing framework introduced by ServiceNow. While the term Application Service may not accurately convey its intended meaning, the underlying definition is correct. When ServiceNow chose the term application, they meant it in the academic sense of "to apply." One of the early authors of the CSDM expressed regret over not naming it "System Services," but I believe that would not have been a better choice.
+**Application Services** are not related to software applications. (Take a moment to let that sink in.) Remember that the CSDM is an evolving and ever maturing framework introduced by ServiceNow. While the term Application Service may not accurately convey its intended meaning, the underlying definition is correct. When ServiceNow chose the term application, the means was more inline to the academic sense of "to apply." One of the early authors of the CSDM expressed regret over not naming it "System Services," but I believe that would not have been a better choice.
 
 Instead of thinking of Application Services as software applications, consider Application Services as Deployed Services (though I will not use this term officially, it helps illustrate the concept). Application Services represent the deployments (or instances) of a solution within the organization. Another way to view them is as actualizations, meaning what is real in practice.
 
@@ -83,17 +95,21 @@ For example, if you need a temporary cubicle for a visitor and have offices in B
 
 The same principle applies to digital solutions. Suppose each of the three office locations has an instance of the timekeeping solution Kronos, and the IT department also maintains development (DEV) and user acceptance testing (UAT) instances of Kronos. In this case, there would be five Application Service definitions in ServiceNow, one for each deployment of Kronos at the office locations (3) and for development and testing (2).
 
+#### Technical Services and Application Services Overlap
+
+Confusion can arise when Technical Services and Application Services overlap. For instance, Microsoft Active Directory can be classified as both. As a Technical Service, it represents the general expertise professionals have about Microsoft Active Directory. In contrast, as an Application Service, it pertains to the deployment of Microsoft Active Directory on domain controllers within the organization.
+
 ### Business Services
 
 **Business Services** address the broader question, _“What can the organization accomplish?”_ These services consolidate all Technical and Application Services into groupings that provide comprehensive answers to overarching organizational questions. Essentially, Business Services are designed for understanding at the director level and above. Examples of Business Services include Financial Services, Marketing, Sales, Manufacturing, Legal Services, among others.
 
-While defining Business Services is crucial for understanding the larger landscape of the organization, they are typically the last to be defined and are considered lower in priority. This is because Technical Services and Application Services form the foundational elements that constitute Business Services. Therefore, unless an organization is being established from scratch, it is more effective to focus initially on Technical and Application Services.
+While defining Business Services is crucial for understanding the larger landscape of the organization, they are typically the last to be defined and are considered lower in priority. This is because Technical Services and Application Services form the foundational elements that constitute Business Services. Therefore, it is more effective to focus initially on defining Technical and Application Services.
 
 ## Service & Service Offerings
 
-There are two distinct definitions for each service type mentioned above: **Service** and **Service Offering**. For detailed definitions, please refer to ServiceNow’s documentation on what constitutes a Service and a Service Offering¹.
+There are two distinct definitions for each service type mentioned above: **Service** and **Service Offering**. For detailed definitions, please refer to ServiceNow’s documentation on what constitutes a Service and a Service Offering.
 
-To simplify, a **Service** is a collection of Service Offerings. A **Service Offering** represents the most granular level of service within its category. While the concept is straightforward, it can be expanded in complexity if needed.
+To simplify the formal ServiceNow definitions, a **Service** is a collection of Service Offerings. A **Service Offering** represents the most granular level of service within its Service. While the concept is straightforward, it can be expanded as needed.
 
 __TL;DR:__ services are the buckets and Service Offerings are the marbles in the buckets. 
 
