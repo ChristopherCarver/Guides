@@ -5,11 +5,13 @@ A practical guide implementing ServiceNow CSDM
 
 Version 20240825 
 
+```mermaid
 graph LR;
 A-->B;
 A-->C;
 B-->D;
 C-->D;
+```
 
 # Safe Harbor Statement
 
