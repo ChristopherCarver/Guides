@@ -5,19 +5,6 @@ A practical guide implementing ServiceNow CSDM
 
 Version 20240825 
 
-```mermaid
-flowchart TB
-  subgraph Service
-    subgraph Service Offering A
-    end
-    subgraph Service Offering B
-    end
-    subgraph Service Offering C
-    end
-  end
-```
-here
-
 # Safe Harbor Statement
 
 This guide provides one approach to implementing the Common Service Data Model (CSDM) on the ServiceNow platform. However, I'm not bold enough to claim that it's the definitive way. The CSDM framework continually evolves through the efforts of engineers at ServiceNow, and if anyone can state the exact way to implement CSDM, it's them. Therefore, your mileage may vary in terms of takeaways from this guide. Your best path forward lies in listening, understanding, and collaborating with others.
@@ -82,13 +69,13 @@ There are three primary service types in ServiceNow; application, business, and 
 
 ### Technical Services
 
-**Technical Services** defines the "what" is being provided as a service. (Notice, I did not include "how", this is important and will come into play later on.) Technical Services should not be interpreted solely as "technology", but rather as "technically", in the sense of "technically, this is what I know" or "technically, this is what I provide." The focus should be on what teams and individuals know or provide when defining technical service offerings. This is not to say Technical Service definitions cannot be technology, they can be as well. For example Microsoft Active Directory can be defined as a Technical Service as that is a service provided through that solution for identity and access management. 
+__Technical Services__ defines the "what" is being provided as a service. (Notice, I did not include "how", this is important and will come into play later on.) Technical Services should not be interpreted solely as "technology", but rather as "technically", in the sense of "technically, this is what I know" or "technically, this is what I provide." The focus should be on what teams and individuals know or provide when defining technical service offerings. This is not to say Technical Service definitions cannot be technology, they can be as well. For example Microsoft Active Directory can be defined as a Technical Service as that is a service provided through that solution for identity and access management. 
 
 For instance, if you need to open a ticket requesting assistance with setting up a cubicle for a visiting guest, this is not a technology but a service likely provided by the Human Resources department, an office/floor manager, or a administration assistent. Therefore, you can and should create a technical service called Office Management or Office Resources. It is important not to confuse these with business services, as they are entirely different.
 
 ### Application Services
 
-**Application Services** are not related to software applications. (Take a moment to let that sink in.) Remember that the CSDM is an evolving and ever maturing framework introduced by ServiceNow. While the term Application Service may not accurately convey its intended meaning, the underlying definition is correct. When ServiceNow chose the term application, the means was more inline to the academic sense of "to apply." One of the early authors of the CSDM expressed regret over not naming it "System Services," but I believe that would not have been a better choice.
+__Application Services__ are not related to software applications. (Take a moment to let that sink in.) Remember that the CSDM is an evolving and ever maturing framework introduced by ServiceNow. While the term Application Service may not accurately convey its intended meaning, the underlying definition is correct. When ServiceNow chose the term application, the means was more inline to the academic sense of "to apply." One of the early authors of the CSDM expressed regret over not naming it "System Services," but I believe that would not have been a better choice.
 
 Instead of thinking of Application Services as software applications, consider Application Services as Deployed Services (though I will not use this term officially, it helps illustrate the concept). Application Services represent the deployments (or instances) of a solution within the organization. Another way to view them is as actualizations, meaning what is real in practice.
 
@@ -102,15 +89,15 @@ Confusion can arise when Technical Services and Application Services overlap. Fo
 
 ### Business Services
 
-**Business Services** address the broader question, _“What can the organization accomplish?”_ These services consolidate all Technical and Application Services into groupings that provide comprehensive answers to overarching organizational questions. Essentially, Business Services are designed for understanding at the director level and above. Examples of Business Services include Financial Services, Marketing, Sales, Manufacturing, Legal Services, among others.
+__Business Services__ address the broader question, _“What can the organization accomplish?”_ These services consolidate all Technical and Application Services into groupings that provide comprehensive answers to overarching organizational questions. Essentially, Business Services are designed for understanding at the director level and above. Examples of Business Services include Financial Services, Marketing, Sales, Manufacturing, Legal Services, among others.
 
 While defining Business Services is crucial for understanding the larger landscape of the organization, they are typically the last to be defined and are considered lower in priority. This is because Technical Services and Application Services form the foundational elements that constitute Business Services. Therefore, it is more effective to focus initially on defining Technical and Application Services.
 
 ## Service & Service Offerings
 
-There are two distinct definitions for each service type mentioned above: **Service** and **Service Offering**. For detailed definitions, please refer to ServiceNow’s documentation on what constitutes a Service and a Service Offering.
+There are two distinct definitions for each service type mentioned above: __Service__ and __Service Offering__. For detailed definitions, please refer to ServiceNow’s documentation on what constitutes a Service and a Service Offering.
 
-To simplify the formal ServiceNow definitions, a **Service** is a collection of Service Offerings. A **Service Offering** represents the most granular level of service within its Service. While the concept is straightforward, it can be expanded as needed.
+To simplify the formal ServiceNow definitions, a __Service__ is a collection of Service Offerings. A __Service Offering__ represents the most granular level of service within its Service. While the concept is straightforward, it can be expanded as needed.
 
 __TL;DR:__ services are the buckets and Service Offerings are the marbles in the buckets. 
 
@@ -126,6 +113,7 @@ My recommendation is to keep it simple with these basic rules.
 This keeps a flat set of records where Services are groupings of Service Offerings.
 
 Examples:
+
 - Network (Service)
     - WAN (Service Offering)
     - LAN (ServiceOffering)
@@ -143,12 +131,10 @@ Examples:
     - Madrid (Service Offering)
 
 There are a couple of reasons we set this up this way.
-- __Easy to understand standard__ - A simple relationship between all Services and Service Offerings is straightforward. Once you get into multiple levels the maintenance of the organization of the records can get confusing. ServiceNow allows for a complex tree-structure when it comes to all services, the problem becomes obvious overtime, as roles and organizations change. 
-    __TL;DR:__ you are smart, but your predecessor might not be. So keep it simple.
-- __Simple lookups__ - There is a balance between easy to search and easy to find. They are two completely different definitions in the context of user experience (UX). On one hand, having the scroll through volumes of records can be very tedious. And then also having to hunt for what you are looking for with multiple mouse-clicks can also be tedious as well. By having a two-tier relationship between Services and Service Offerings you are addressing both the search and find aspect of UX. Searches can easily be narrowed down to two searches; one for the right Service and one for the right Service Offering. Instead of complex tree searches. Finding through the act of mouse-clicks is narrowed down to two mouse-clicks.
-    __TL;DR:__ save yourself from headaches later on when developing solutions that rely on the CSDM records.
-- __Easier reporting__ - An area that constantly gets overlooked is reporting. You want reports to represent information equally and consistently. By having a two-tier relationship between Services and Service Offerings, reports will be far easier to understand without having to understand embedded sub-services; which in the long run, we have found really does not result in better outcomes or decisions.
-    __TL;DR:__ complex CSDM models equals complex reporting.
+
+- __Easy to understand standard__: A simple relationship between all Services and Service Offerings is straightforward. Once you get into multiple levels the maintenance of the organization of the records can get confusing. ServiceNow allows for a complex tree-structure when it comes to all services, the problem becomes obvious overtime, as roles and organizations change. In short, you are smart, but your predecessor might not be. So keep it simple.
+- __Simple lookups__: There is a balance between easy to search and easy to find. They are two completely different definitions in the context of user experience (UX). On one hand, having the scroll through volumes of records can be very tedious. And then also having to hunt for what you are looking for with multiple mouse-clicks can also be tedious as well. By having a two-tier relationship between Services and Service Offerings you are addressing both the search and find aspect of UX. Searches can easily be narrowed down to two searches; one for the right Service and one for the right Service Offering. Instead of complex tree searches. Finding through the act of mouse-clicks is narrowed down to two mouse-clicks.
+- __Easier reporting__: An area that constantly gets overlooked is reporting. You want reports to represent information equally and consistently. By having a two-tier relationship between Services and Service Offerings, reports will be far easier to understand without having to understand embedded sub-services; which in the long run, we have found really does not result in better outcomes or decisions.
 
 __Key Point:__ Keep Service and Service Offerings simple. The CMDB is already complex enough, do not make more work for yourself by making the the CSDM complex too.
 
