@@ -95,20 +95,66 @@ While defining Business Services is crucial for understanding the larger landsca
 
 ## Service & Service Offerings
 
-There are two distinct definitions for each service type mentioned above: __Service__ and __Service Offering__. For detailed definitions, please refer to ServiceNow’s documentation on what constitutes a Service and a Service Offering.
+There are two distinct definition types for both Technical and Business Services: __Service__ and __Service Offering__ definitions. This means there are records for Technical Services and Technical Service Offerings, as well as Business Services and Business Service Offerings. For detailed definitions, please refer to ServiceNow’s documentation on what constitutes a Service and a Service Offering.
 
-To simplify the formal ServiceNow definitions, a __Service__ is a collection of Service Offerings. A __Service Offering__ represents the most granular level of service within its Service. While the concept is straightforward, it can be expanded as needed.
+To simplify the formal ServiceNow definitions:
 
-__TL;DR:__ services are the buckets and Service Offerings are the marbles in the buckets. 
+- A __Service__ is a collection of Service Offerings.
+- A __Service Offering__ represents the most granular level of service within its Service.
 
-It can get complicated because technically you chain together Services and Service Offerings as they share a base table with a parent field. On one hand, this offers flexibility to model complex models of services. On the other hand developing, maintaining, supporting, and reporting can become quite tedious very quickly.
+__TL;DR:__ Services are the containers, and Service Offerings are the individual items within those containers.
 
-My recommendation is to keep it simple with these basic rules. 
+While the concept of Service and Service Offering is straightforward, practical implementation can be complex. These complications often arise from differing leadership perspectives on their respective towers or domains. Depending on who you ask, you may receive varying answers. Additionally, a change in leadership can bring a new perspective on services. The complexity increases because, in ServiceNow, Services and Service Offerings are linked through a base table with a parent reference field. This structure offers flexibility to model complex service relationships but can make development, maintenance, support, and reporting quite tedious.
 
-- A single Service shall have 1 or more Service Offerings.
-- A Service shall not have a parent Service of the same service type.
-- A Service could have no parent.
-- A Service Offering shall have a Service as a parent.
+The goal is to select a model and advocate for consistency. Here are a few key points to keep in mind:
+
+1. Can you document the model in a way that will make sense for the next ServiceNow administrator?
+1. Can your customers find the service offerings quickly and easily?
+1. Can you generate a report dashboard that equally weighs and measures each service and service offering?
+
+### Example Service & Service Offerings
+
+In these examples we will model a generic organizations Technical Services and Technical Service Offerings. This organization decided on 1:2 model where there would be two levels of Technical Service Offerings per Technical Service.
+
+For exammple:
+
+- Technical Service
+	- Technical Service Offering
+		- Technical Service Offering 
+
+
+Most organizations have one or more teams dedicated to Identity and Access Management. The Identity and Access Management (IAM) service is responsible for managing user identities, authentication, and access control across the organization. This service ensures that only authorized users have access to the necessary resources, enhancing security and compliance.
+
+### Technical Service: Identity and Access Management (IAM)
+
+**Description:**  
+
+
+### Technical Service Offering: Active Directory Management
+
+**Description:**  
+Active Directory Management is a specific offering under the IAM service. It involves the administration and maintenance of the Active Directory (AD) infrastructure, which includes user account management, group policies, and directory services.
+
+**Components of Active Directory Management:**
+
+1. **User Account Management:**
+   - **Creation and Deletion:** Managing the lifecycle of user accounts, including creation, modification, and deletion.
+   - **Password Management:** Handling password resets, complexity requirements, and expiration policies.
+
+2. **Group Policy Management:**
+   - **Policy Creation and Enforcement:** Developing and applying group policies to manage user and computer settings.
+   - **Security Policies:** Implementing security policies to ensure compliance with organizational standards.
+
+3. **Directory Services:**
+   - **Replication Management:** Ensuring that directory information is consistently replicated across all domain controllers.
+   - **Schema Management:** Maintaining and updating the AD schema to support new applications and services.
+
+4. **Access Control:**
+   - **Role-Based Access Control (RBAC):** Defining roles and assigning permissions based on job functions.
+   - **Audit and Compliance:** Monitoring access logs and generating reports to ensure compliance with security policies.
+
+
+ 
 
 This keeps a flat set of records where Services are groupings of Service Offerings.
 
