@@ -112,71 +112,54 @@ The goal is to select a model and advocate for consistency. Here are a few key p
 1. Can your customers find the service offerings quickly and easily?
 1. Can you generate a report dashboard that equally weighs and measures each service and service offering?
 
-### Example Service & Service Offerings
+## Nouns & Verbs (Professional Tip)
+
+The CSDM defines various types of services, including technical services, technical service offerings, and application services. When setting up service definitions, it is crucial to use nouns only, avoiding verbs in the naming conventions. Service definitions should be either generalized nouns or proper nouns, with no verbs included.
+
+Adopting this policy helps prevent duplication of verbs across different services. For instance, the verb "add user" could apply to multiple services such as Active Directory, SAP, PeopleSoft, Microsoft Windows Desktop, and ServiceNow. Similarly, "grant access" could be relevant for Adobe, CAD/CAM systems, OracleDB, and Fidelity.
+
+Verbs should be reserved for creating catalog items, which are the actionable representations of services. Catalog items use verbs to describe specific actions that can be performed, such as "add," "provision," "reclaim," "delete," "security remediation," "patch," "update," and "upgrade."
+
+__Leadership Alert:__ When setting up services and service offerings, it is important to communicate the concept of using nouns for service definitions to leadership. Leadership may instinctively want to include verbs in service definitions, such as "grant," "revoke," "reset," etc. However, using verbs in service definitions can lead to an overwhelming number of service offerings. This creates challenges in maintaining consistency, as it becomes difficult to decide when to use terms like "add," "provision," or "create." Leadership often wants visibility into the actions (verbs) their teams are performing. It is essential to explain that catalog items capture these verbs and that reports can be generated based on request items and their relationships with catalog items. This approach ensures clarity and consistency in service definitions while providing the necessary insights into team activities.
+
+
+
+## Example Service & Service Offerings
 
 In these examples we will model a generic organizations Technical Services and Technical Service Offerings. This organization decided on 1:2 model where there would be two levels of Technical Service Offerings per Technical Service.
 
 For exammple:
 
-- Technical Service
-	- Technical Service Offering
-		- Technical Service Offering 
+- Technical Service (1st tier)
+	- Technical Service Offering (2nd tier)
+		- Technical Service Offering (3rd tier)
 
+I will call out the 1st thru 3rd tier to help designate at which level we will define the services.  
+
+### Identity & Access Management
 
 Most organizations have one or more teams dedicated to Identity and Access Management. The Identity and Access Management (IAM) service is responsible for managing user identities, authentication, and access control across the organization. This service ensures that only authorized users have access to the necessary resources, enhancing security and compliance.
 
-### Technical Service: Identity and Access Management (IAM)
+The Technical Service (1st tier) would be defined as _Identity & Access Management_.
 
-**Description:**  
+Within _Identity & Access Management_, the organization has broken down their Technical Service Offering's 2nd and 3rd tier and they are:
 
-
-### Technical Service Offering: Active Directory Management
-
-**Description:**  
-Active Directory Management is a specific offering under the IAM service. It involves the administration and maintenance of the Active Directory (AD) infrastructure, which includes user account management, group policies, and directory services.
-
-**Components of Active Directory Management:**
-
-1. **User Account Management:**
-   - **Creation and Deletion:** Managing the lifecycle of user accounts, including creation, modification, and deletion.
-   - **Password Management:** Handling password resets, complexity requirements, and expiration policies.
-
-2. **Group Policy Management:**
-   - **Policy Creation and Enforcement:** Developing and applying group policies to manage user and computer settings.
-   - **Security Policies:** Implementing security policies to ensure compliance with organizational standards.
-
-3. **Directory Services:**
-   - **Replication Management:** Ensuring that directory information is consistently replicated across all domain controllers.
-   - **Schema Management:** Maintaining and updating the AD schema to support new applications and services.
-
-4. **Access Control:**
-   - **Role-Based Access Control (RBAC):** Defining roles and assigning permissions based on job functions.
-   - **Audit and Compliance:** Monitoring access logs and generating reports to ensure compliance with security policies.
-
+- Active Directory Management
+	- User Account Management
+	- Group Policy Management
+	- Directory Services
+	- Access Control
+- Lightwieght Directory Access Protocol
+	- Directory Services
+   - Directory Management
+- Authentication
+	- Single-Sign On
+	- Kerberos
+	- SAML
+   - Radius
+	- Priviledge Access Management
 
  
-
-This keeps a flat set of records where Services are groupings of Service Offerings.
-
-Examples:
-
-- Network (Service)
-    - WAN (Service Offering)
-    - LAN (ServiceOffering)
-    - MPLS (Service Offering)
-    - WIFI (Service Offering)
-- Identity and Access Management (Service)
-    - Active Directory (Service Offering)
-    - Active Directory Accounts (Service Offering)
-    - Active Directory Groups (Service Offering)
-    - LDAP (Service Offering)
-    - SSO (Service Offering)
-- Field Offices (Service)
-    - Burbank (Service Offering)
-    - London (Service Offering)
-    - Madrid (Service Offering)
-
-There are a couple of reasons we set this up this way.
 
 - __Easy to understand standard__: A simple relationship between all Services and Service Offerings is straightforward. Once you get into multiple levels the maintenance of the organization of the records can get confusing. ServiceNow allows for a complex tree-structure when it comes to all services, the problem becomes obvious overtime, as roles and organizations change. In short, you are smart, but your predecessor might not be. So keep it simple.
 - __Simple lookups__: There is a balance between easy to search and easy to find. They are two completely different definitions in the context of user experience (UX). On one hand, having the scroll through volumes of records can be very tedious. And then also having to hunt for what you are looking for with multiple mouse-clicks can also be tedious as well. By having a two-tier relationship between Services and Service Offerings you are addressing both the search and find aspect of UX. Searches can easily be narrowed down to two searches; one for the right Service and one for the right Service Offering. Instead of complex tree searches. Finding through the act of mouse-clicks is narrowed down to two mouse-clicks.
@@ -184,24 +167,6 @@ There are a couple of reasons we set this up this way.
 
 __Key Point:__ Keep Service and Service Offerings simple. The CMDB is already complex enough, do not make more work for yourself by making the the CSDM complex too.
 
-## Nouns & Verbs
-
-The CSDM defines various types of services as defined above; technical services, technical service offerings, and application services that you will need to setup. When setting up a service definition/record, all services definitions should be nouns with no verbs.
-
-Service definitions can be either generalized nouns or proper nouns with no verbs in their definition. The reason is many times a service can have multiple actions (verbs) and that is better saved for catalog items (requests). 
-
-Here are a few examples of common mistakes.
-
-| Incorrect Service Name | Correct Service Name      |
-|------------------------|---------------------------|
-| Password Reset         | Active Directory Account  |
-| Windows Update         | Microsoft Windows Desktop |
-| Provision SAP Account  | SAP Account               |
-| Security Remediation   | Attack Surface Management |
-
-__TL;DR:__ service definitions should only contain nouns and catalog items should be the verbs.
-
-__Leadership Alert:__ When setting up Services and Service Offerings, the whole noun concept is a hard concept for leadership to grasp. Leadership would want to create services with verbs in the definition. For example adding “grant”, “revoke“, “reset”, etc. etc. into the service definition name. The problem is using verbs would create an avalanche of service offerings. Because then there is “provision”, “reclaim”, “add”, “delete”, “security remediation”, “patch”, “update”, “upgrade”, and the list continues on and on. Then trying to stay consistent becomes something to manage as well, when do you use “add”, “provision”, or “create”? Ultimately, leadership wants to ensure they can see what actions (verbs) their teams were performing. Explain how catalog items capture the verbs and how they would generate reports based on request items. 
 
 __Real World:__ One of the challenges I ran into was a scenario where a single service offering was supported by 3 different support groups. One support group supported provisioning virtual machines, one support group supported patching virtual machines, and a third support group supported backing up and restoring virtual machines. Leadership wanted the following Service Offering definitions:
 
