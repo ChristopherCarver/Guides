@@ -112,16 +112,69 @@ The goal is to select a model and advocate for consistency. Here are a few key p
 1. Can your customers find the service offerings quickly and easily?
 1. Can you generate a report dashboard that equally weighs and measures each service and service offering?
 
-## Nouns & Verbs (Professional Tip)
+## Professional Advice
 
-The CSDM defines various types of services, including technical services, technical service offerings, and application services. When setting up service definitions, it is crucial to use nouns only, avoiding verbs in the naming conventions. Service definitions should be either generalized nouns or proper nouns, with no verbs included.
+Here are some points for consideration. This is not meant as _go and do_, but rather for your consideration. And as always, your mileage may vary.
 
-Adopting this policy helps prevent duplication of verbs across different services. For instance, the verb "add user" could apply to multiple services such as Active Directory, SAP, PeopleSoft, Microsoft Windows Desktop, and ServiceNow. Similarly, "grant access" could be relevant for Adobe, CAD/CAM systems, OracleDB, and Fidelity.
+### Nouns & Verbs
 
-Verbs should be reserved for creating catalog items, which are the actionable representations of services. Catalog items use verbs to describe specific actions that can be performed, such as "add," "provision," "reclaim," "delete," "security remediation," "patch," "update," and "upgrade."
+When setting up service definitions, it is crucial to use nouns only, avoiding verbs in the naming conventions. Service definitions should be either generalized nouns or proper nouns, with no verbs included.
+
+- Adopting this policy helps prevent duplication of verbs across different services. For instance, the verb "add user" could apply to multiple services such as Active Directory, SAP, PeopleSoft, Microsoft Windows Desktop, and ServiceNow. Similarly, "grant access" could be relevant for Adobe, CAD/CAM systems, OracleDB, and Fidelity.
+
+- Verbs should be reserved for creating catalog items, which are the actionable representations of services. Catalog items use verbs to describe specific actions that can be performed, such as "add," "provision," "reclaim," "delete," "security remediation," "patch," "update," and "upgrade."
 
 __Leadership Alert:__ When setting up services and service offerings, it is important to communicate the concept of using nouns for service definitions to leadership. Leadership may instinctively want to include verbs in service definitions, such as "grant," "revoke," "reset," etc. However, using verbs in service definitions can lead to an overwhelming number of service offerings. This creates challenges in maintaining consistency, as it becomes difficult to decide when to use terms like "add," "provision," or "create." Leadership often wants visibility into the actions (verbs) their teams are performing. It is essential to explain that catalog items capture these verbs and that reports can be generated based on request items and their relationships with catalog items. This approach ensures clarity and consistency in service definitions while providing the necessary insights into team activities.
 
+### Users vs. Groups vs. Positional Roles
+
+Maintaining a long term maintenance and support strategy should include how to keep ServiceNow current as organization changes take place. When setting up services, have a strategy to establish ownership pointing to groups instead of individual users. The reason is employee role changes and turnover would require constant upkeep on what records to update. Wether you pull in user and group information from an identity provider or use local ServiceNow records, this is a good rule of thumb. This shifts the maintenance and support away from the ServiceNow team to the group managers to maintain membership.
+ 
+The base Service [cmdb_ci_service] table contains 10 user reference fields. A better strategy is to create custom fields that reference the Group [sys_user_group] table instead. The only field suggested to not to have a group field for is the _Attested By_ field. Attestment typically requires a specific account for audit purposes. 
+
+An alternative for advanced and mature organizations, consider leveraging positional roles in place of user references. 
+
+### Available For & Not Available For
+
+Just as not all catalog items are available to everyone, services have targeted consumers/customers as well. Then is makes sense that services should be scoped for targeted available for accounts.
+ 
+ServiceNow has a field on the base service table [cmdb_ci_service] called _Users supported_ that references the table [sys_user_table]. This requires the organization to maintain a user group for the service. Consider leveraging the _User Criteria_ table [user_criteria] for greater level of flexibility and long term support with less managerial overhead in comparison to a standard group. 
+
+__One way__ (easier) is to create two custom fields to the base service table [cmdb_ci_service] called _Available for_ and _Not Available for_ that is a List collector referencing _User Criteria_ table [user_criteria]. __Another way__ (harder) is to create two custom tables _Service Available for_ [u_cmdb_ci_service_user_criteria_mtom] and _Service Not Available for_ [u_cmdb_ci_service_user_critera_no_mtom].  
+
+#### Available For & Not Available For Setup Instructions
+
+__FILL ME IN__
+
+### Ticket Routing
+
+To address the issue of ticket misrouting, consider leveraging services instead of relying on assignment groups when assigning tickets. Relying on assignment groups is prone to difficulties when organizations change, when service responsibilities change between teams, and when external partnerships change. It is common for tribal knowledge to form where tickets are assigned to teams, but what happens when that service is no longer handled by that team? 
+
+As a hypothetical example, an internal facilities team has handled parking lot security for years. Any issue or request pertaining to parking lot security has been handled by this team. As the number of facilities has increased, so has the ticket overhead, streching the team to seek alternative solutions. To keep costs down the organization has hired an external contracting firm that handles parking lot security. Then in ServiceNow two new assignment groups are created, one for the internal facilities team and one for the external security parking team. If the organization relies on assigning tickets based on assignment groups, many people will continue to open parking lot security tickets against the wrong team. Also, all of the catalog items, workflows, flows, business rules, etc. etc.. will have to be updated as well that point to the internal facilities team.
+
+The best course of action is to force all tickets and automation to use services as a means to perform ticket assignment. The base Task [task] table contains both __Assignment group__ and __Service Offering__ fields.
+
+### Automation
+
+Ticket assignment driven from ser
+
+### Service Management
+
+The Service Offering [service_offering] table contains 3 references to Group [sys_user_group] table; Approval group, Supported group, and Change group. 
+
+### Service Tiers
+
+A __service tier__ typically refers to the level of support provided, often categorized by the complexity and urgency of the issues being addressed. Here’s a breakdown of common support tiers:
+
+1. __Tier 1 (Level 1)__: This is the first line of support, often handling basic customer inquiries and issues. Support staff at this level provide general assistance, troubleshoot common problems, and escalate more complex issues to higher tiers if necessary.
+
+2. __Tier 2 (Level 2)__: This level deals with more complex issues that Tier 1 cannot resolve. Support staff here have more technical expertise and can handle in-depth troubleshooting, configuration issues, and more detailed problem-solving.
+
+3. __Tier 3 (Level 3)__: This tier involves highly specialized support, often provided by experts or engineers. They handle the most complex and critical issues, including those that require deep technical knowledge or development skills. They may also work on bug fixes and system improvements.
+
+4. __Tier 4 (Level 4)__: Sometimes, there is a fourth tier, which involves external support from vendors or partners. This tier is engaged when the issue requires specialized knowledge or access to proprietary systems and tools that the internal support team does not have.
+
+These tiers help ensure that customer issues are resolved efficiently and effectively, with the right level of expertise applied to each problem.
 
 
 ## Example Service & Service Offerings
@@ -130,19 +183,19 @@ In these examples we will model a generic organizations Technical Services and T
 
 For exammple:
 
-- Technical Service (1st tier)
-	- Technical Service Offering (2nd tier)
-		- Technical Service Offering (3rd tier)
+- Technical Service (1st level)
+	- Technical Service Offering (2nd level)
+		- Technical Service Offering (3rd level)
 
-I will call out the 1st thru 3rd tier to help designate at which level we will define the services.  
+I will call out the 1st thru 3rd level to help designate at which level we will define the services.  
 
 ### Identity & Access Management
 
 Most organizations have one or more teams dedicated to Identity and Access Management. The Identity and Access Management (IAM) service is responsible for managing user identities, authentication, and access control across the organization. This service ensures that only authorized users have access to the necessary resources, enhancing security and compliance.
 
-The Technical Service (1st tier) would be defined as _Identity & Access Management_.
+The Technical Service (1st level) would be defined as _Identity & Access Management_.
 
-Within _Identity & Access Management_, the organization has broken down their Technical Service Offering's 2nd and 3rd tier and they are:
+Within _Identity & Access Management_, the organization has broken down their Technical Service Offering's 2nd and 3rd level and they are:
 
 - Active Directory Management
 	- User Account Management
