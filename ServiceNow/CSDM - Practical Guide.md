@@ -118,13 +118,65 @@ When setting up service definitions, it is crucial to use nouns only, avoiding v
 
 __Leadership Alert:__ When setting up services and service offerings, it is important to communicate the concept of using nouns for service definitions to leadership. Leadership may instinctively want to include verbs in service definitions, such as "grant," "revoke," "reset," etc. However, using verbs in service definitions can lead to an overwhelming number of service offerings. This creates challenges in maintaining consistency, as it becomes difficult to decide when to use terms like "add," "provision," or "create." Leadership often wants visibility into the actions (verbs) their teams are performing. It is essential to explain that catalog items capture these verbs and that reports can be generated based on request items and their relationships with catalog items. This approach ensures clarity and consistency in service definitions while providing the necessary insights into team activities.
 
-### Users vs. Groups vs. Positional Roles
+### Unique Names 
 
-Maintaining a long term maintenance and support strategy should include how to keep ServiceNow current as organization changes take place. When setting up services, have a strategy to establish ownership pointing to groups instead of individual users. The reason is employee role changes and turnover would require constant upkeep on what records to update. Wether you pull in user and group information from an identity provider or use local ServiceNow records, this is a good rule of thumb. This shifts the maintenance and support away from the ServiceNow team to the group managers to maintain membership.
+A potential problem your organization might run into is duplication of service names; which ServiceNow does not allow. What happens when:
+
+- you have multiple teams or sub-teams that provide tiered support?
+- you have multiple IT departments within multiple companies within the same organization?
+- you have multiple teams in different locales supporting the same service?
+
+Though service records contain various fields, the services cannot cover all the various scenarios that make your organization unique. The go to for some is to create custom fields and there are cases where this would be applicable. If you forsee duplicate service names, consider using additional attributes to differentiate services by their names. 
+
+I prefer a _pill_ or _block_ approach for naming standards. A _pill_ uses parentheses () and a _block_ uses square brackets [] to append tags to service names to make them unique; either will suffice in ServiceNow. Within the pill or block, you set the standard of tags to help uniquely define the services.  
+
+The standards below are examples based on needing to support multiple companies inside a single organization on the same instance of ServiceNow. Your mileage will vary based on your organization’s structures. Take this an idea and implement your own version that best fits your organization's style.
+
+#### Technical Service
+
+The syntax for technical services:
+        
+```<name> (<company abbreviation>|<department code>)```
+
+where:
+- __\<name\>__ is the name of the service
+- __\<company abbreviation\>__ is the company 3-letter designation
+- __\<department code\>__ is the department code or symbol
+
+Company abbreviation can be the same as the _Stock_ field on the Companies [core_company] table.
+
+Department code is needed for similar technical service names within a company as many departments have simalar service names. As an example “Security” could be used for both physical security at facilities and cybersecurity for IT. “Engineering” could be used for manufacturing, R&D, and PLM for IT. 
+
+#### Technical Service Offering 
+
+The syntax for technical service offerings:
+        
+`<name> (<company abbreviation>|<locale>|<T#>)`
+
+where:
+- __\<name\>__ is the name of the service
+- __\<company abbreviation\>__ is the company 3-letter designation
+- __\<T#\>__ is the support tier number
+
+Regarding tier number, tiers are integers that start at 1 and goes to N. When defining services with tiers, make sure the tiers are consecutive with no gaps; gaps add confusion and doubts. Also, as an advanced tip, tier 0 should be reserved for automation. When designing workflows/flows that perform automation, make sure that tickets that have service fields use tier 0 services to denote automation operations.
+
+##### Scenario
+
+| Technical Service Offering                | Support Group |
+|------------------------------------------|---------------|
+| Active Directory - Accounts (ENT\|T1)    | Zeta          |
+| Active Directory - Accounts  (ALP\|T2)   | Delta         |
+| Active Directory - Accounts  (ALP\|T3)   | Alpha         |
+| Identity and Access Management (BET\|T2) | Beta          |
+| Identity and Access Management (GAM\|T2) | Gamma         |
+
+__NOTE__: See section _Support Groups_ regarding proper naming conventions.
+
+### Users vs. Groups
+
+Maintaining a long term maintenance and support strategy should include how to keep ServiceNow current as organization changes take place. When setting up services, have a strategy to establish ownership pointing to groups instead of individual users. The reason is employee role changes and turnover would require constant upkeep on what records to update. Wether you pull in user and group information from an identity provider or use local ServiceNow records, this is a wise rule to consider. This shifts the maintenance and support away from the ServiceNow team to the group managers to maintain membership.
  
-The base Service [cmdb_ci_service] table contains 10 user reference fields. A better strategy is to create custom fields that reference the Group [sys_user_group] table instead. The only field suggested to not to have a group field for is the _Attested By_ field. Attestment typically requires a specific account for audit purposes. 
-
-An alternative for advanced and mature organizations, consider leveraging positional roles in place of user references. 
+The base Service [cmdb_ci_service] table contains 10 user reference fields. A better strategy is to create custom fields that reference the Group [sys_user_group] table instead. The only field suggested to leave as a reference to an individual user is the _Attested By_ field. Attestment typically requires a specific account for audit purposes. Check with your business audit process before making changes.
 
 ### Available For & Not Available For
 
@@ -142,17 +194,13 @@ __FILL ME IN__
 
 To address the issue of ticket misrouting, consider leveraging services instead of relying on assignment groups when assigning tickets. Relying on assignment groups is prone to difficulties when organizations change, when service responsibilities change between teams, and when external partnerships change. It is common for tribal knowledge to form where tickets are assigned to teams, but what happens when that service is no longer handled by that team? 
 
-As a hypothetical example, an internal facilities team has handled parking lot security for years. Any issue or request pertaining to parking lot security has been handled by this team. As the number of facilities has increased, so has the ticket overhead, streching the team to seek alternative solutions. To keep costs down the organization has hired an external contracting firm that handles parking lot security. Then in ServiceNow two new assignment groups are created, one for the internal facilities team and one for the external security parking team. If the organization relies on assigning tickets based on assignment groups, many people will continue to open parking lot security tickets against the wrong team. Also, all of the catalog items, workflows, flows, business rules, etc. etc.. will have to be updated as well that point to the internal facilities team.
+As a hypothetical example, an internal facilities team has handled parking lot security for years addressing reported incidents and fulfilling requests. As the number of facilities has increased, so has the ticket overhead, streching the team to seek alternative solutions. To keep costs down the organization has hired an external contracting firm to take over parking lot security and the internal facilities team can field all other services. Then in ServiceNow two new assignment groups are created, one for the internal facilities team and one for the external security parking team. If the organization relies on assigning tickets based on assignment groups, many people will continue to open parking lot security tickets against the wrong team. Also, all of the catalog items, workflows, flows, business rules, etc. etc.. will have to be updated as well that point to the internal facilities team.
 
-The best course of action is to force all tickets and automation to use services as a means to perform ticket assignment. The base Task [task] table contains both __Assignment group__ and __Service Offering__ fields.
+The best course of action is to force all tickets and automation to use services as a means to perform ticket assignment. This ensures tickets are routed to the appropriate team that handles the service requested. In order for this to work there has to be enough services pre-defined for ticket routing to be successful.
 
-### Automation
+#### Ticket Routing Setup Instructions
 
-Ticket assignment driven from ser
-
-### Service Management
-
-The Service Offering [service_offering] table contains 3 references to Group [sys_user_group] table; Approval group, Supported group, and Change group. 
+__FILL ME IN__
 
 ### Service Tiers
 
@@ -233,19 +281,7 @@ __Virtual Machine - Disaster Recovery__ would take care of backups, recovery, an
 
 Here are some tips to consider when setting up service standards in your organization.
 
-### Unique Names 
 
-Typically, unique names are not a problem when defining records. But, what happens when:
-
-- you have multiple teams or sub-teams that provide tiered support?
-- you have multiple IT departments within multiple companies within the same organization?
-- you have multiple teams in different locales?
-
-Though service records contain various fields, the services cannot cover all the various scenarios that make your company unique. The go to for some is to create custom fields and there are cases where this would be applicable. If you can forsee duplicate service names, consider using additional attributes to differentiate services by their names. 
-
-I prefer a _”pill”_ or _”block”_ approach for naming standards. A _”pill”_ uses parentheses and a _”block”_ uses square brackets to append tags to service names to make them unique. I have not run into a case where I would use both a pill and block style for naming convensions on the same platform; either will suffice in ServiceNow. Within the pill or block the standard of tags can be defined and set apart.  
-
-The standards below are examples based on needing to support 8 different clients on the same instance of ServiceNow. Your mileage will vary based on your organization’s structures. Take this an idea and implement your own version that best fits your organization's style.
 
 ##### Scenario
 I will be using the following scenario as an example for defining various services.
