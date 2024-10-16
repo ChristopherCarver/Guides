@@ -7,49 +7,53 @@ Version 20240825
 
 # Safe Harbor Statement
 
-This guide provides one approach to implementing the Common Service Data Model (CSDM) on the ServiceNow platform. However, I'm not bold enough to claim that it's the definitive way. The CSDM framework continually evolves through the efforts of engineers at ServiceNow, and if anyone can state the exact way to implement CSDM, it's them. Therefore, your mileage may vary in terms of takeaways from this guide. Your best path forward lies in listening, understanding, and collaborating with others.
+This guide provides one approach to implementing the Common Service Data Model (CSDM) on the ServiceNow platform. However, I am not bold enough to claim that it is the definitive way. The CSDM framework continually evolves through the efforts of engineers at ServiceNow, and if anyone can state the exact way to implement CSDM, it is them. Therefore, your mileage may vary in terms of takeaways from this guide. Your best path forward lies in listening, understanding, and collaborating with others.
 
 # About
 
-As someone working at a moderately large manufacturing multi-conglomerate, I've had the opportunity to collaborate with eight distinct business units (which I refer to as clients). Each client operates independently within the broader context of the business, with its own IT department. My role involves ensuring that all eight clients use the same instance of ServiceNow.
+As someone working at a moderately large manufacturing multi-conglomerate, I have the opportunity to collaborate with eight distinct business units (which I refer to as clients). Each client operates independently within the broader context of the business, with its own IT department. My role involves ensuring that all eight clients leverage the same instance of ServiceNow with no domain seperation.
 
-In this guide, I'll share real-world examples of how to implement the Configuration and Service Data Model (CSDM) effectively. Whether you're part of a large organization or a smaller team, these insights can help streamline your processes and enhance collaboration. 
+In this guide, I will share real-world examples of how to implement the Configuration and Service Data Model (CSDM) effectively within the ITSM module. Whether you are part of a large organization or a smaller team, these insights could help streamline your processes and enhance collaboration. 
 
-> __TL;DR:__ In this guide, I share practical insights on implementing the Configuration and Service Data Model (CSDM) within your organization. Drawing from real-world examples, I discuss how to streamline processes and enhance collaboration across distinct business units. Whether you're part of a large enterprise or a smaller team, these insights can help you effectively use ServiceNow.
+> __TL;DR:__ In this guide, I share practical insights on implementing the Configuration and Service Data Model (CSDM) within the ITSM module for your organization. Drawing from real-world examples, I discuss how to streamline processes and enhance collaboration across distinct business units. Whether you are part of a large enterprise or a smaller team, these insights can help you effectively use ServiceNow.
 
 # Introduction
 
-One of my favorite post-movie ending scenes comes from the Walt Disney film _Finding Nemo_. In this clip, a band of fish escapes from their aquarium and returns to the ocean, only to discover that they are still trapped in their plastic baggies floating ontop of the water. The scene ends with the poignant question, _'Now what?'_ The reason why this scene resonates is we have all been there. Whether you're a customer or a partner, we've all been there. After the flashy presentations, dazzling demos, and once the ink has dried on the digital contracts, it's time to actually implement what has been purchased.
+One of my favorite post-movie ending scenes comes from the Walt Disney film _Finding Nemo_. In this clip, a band of fishes escapes from their aquarium and returns to the ocean, only to discover that they are still trapped in their plastic baggies floating ontop of the water. The scene ends with the poignant question, _'Now what?'_ The reason why this scene resonates is we have all been there. Whether you are a customer or a partner, we have all been there. After the flashy presentations, dazzling demos, and once the ink has dried on the digital contracts, it is time to actually implement what has been purchased.
 
-Anytime a solution is purchased, the number 1 question on the minds of leadership is _"when will the solution be up and running?"_ Ultimately they want to see return on investment as soon as possible. Now of course the answer varies on many factors like leadership involvement, staff knowledge and utilization of ServiceNow partners. If you are reading this you are either in the position of pre-implementation or post implementation of ServiceNow. The later is a bit more effort to make changes, but it is possible and I will lay out strategies where it makes sense when converting over.  
+Anytime a solution is purchased, the number 1 question on the minds of leadership is _"when will the solution be up and running?"_ Ultimately they want to see return on investment as soon as possible. Now of course the answer varies on many factors like leadership involvement, staff knowledge, and utilization of ServiceNow partners. If you are reading this, you are either in the position of pre-implementation or post implementation of ServiceNow. The later takes a bit more effort to make changes, but it is possible and I will lay out strategies where it makes sense when converting over.
 
-The architects and engineers at ServiceNow have developed an excellent model called the Common Service Data Model (CSDM). This model helps organize and enhance our understanding of the various services offered by our organization and the best place to start from when implementing the ITSM module of ServiceNow. The CSDM does integrate with other various modules of the ServiceNow platform as well, which I am still exploring and implementing.
+The easiest and flashy way to show leadership immediate and actionable outcomes is doling out fulfiller licenses and creating catalog items for the service portal. And this is the typical immediate reaction implementation partners take as it gets things started by puting a _Now Open_ sign on the newly minted purchase of ServiceNow. But, there is more to it than just the front end and without understanding the Common Service Data Model (CSDM), you will be setting yourself up for future failure. By understanding the how the CSDM is laid out and works, this will help cement a solid foundation to build from.
+
+The CSDM was designed and developed by architects and engineers at ServiceNow. This is not some third-party industry defined standard where you have to figure out how to adjust processes to meet "industry best standards", but rather practicial implementation how an organization defines itself and operates. By investing into the CSDM, the CSDM becomes the foundation and fuel to create the neccessary components that drive better outcomes from the ServiceNow platform.
 
 ## Why
 
-Before we begin, it's important to address the why question: _"Why go through the effort of setting up the Common Service Data Model (CSDM) in ServiceNow?"_ The best way to answer this is through my own experience.
+Before we begin, it is important to address the why question: _"Why go through the effort of setting up the Common Service Data Model (CSDM) in ServiceNow?"_ The best way to answer this is through my own experience.
 
-- Prior to adopting ServiceNow, my employer faced challenges with basic IT practices that negatively impacted customer satisfaction and caused long-term internal friction. One of the most noticeable issues consistently brought up was ticket misrouting, which led to long delays in delivering services to customers. This frustrated customers driving down IT customer satisfaction. For me, tt was clear that we couldn't carry the "sins of the past" into the future with ServiceNow.
+- Prior to adopting ServiceNow, my employer faced challenges with basic IT practices that negatively impacted customer satisfaction and caused long-term internal friction between the clients. One of the most noticeable issues consistently brought up was ticket misrouting, which led to long delays in delivering services to customers. Customers became frustrated driving down IT customer satisfaction. 
 
 - I had an incredible mentor, and upon his retirement, I asked him, _"What is the biggest hurdle IT has yet to overcome during your tenure at the organization?"_ His response was, _"The CFO has yet to fully understand the value IT brings to the organization, because IT has yet to fully understand all the services it provides."_ As a cost center, IT departments are often seen as only consuming money rather than generating it. In a large and diverse organization, this perception is exacerbated as IT costs continue to rise and technology becomes more common place across all things.
 
-I started with a simple two-part problem statement: _"How do we prevent ticket misrouting?"_ and _"How do we demonstrate IT's value?"_ The CSDM provided all the necessary components and definitions, but lacked specific instructions. I filled in the gaps based on personal experience, intuition, and a dedicated team focused on solving these fundamental issues. As a result, our ticket misrouting is now at an all-time low, and we have developed reports that clearly show the value IT brings to the organization.
+I started with a simple two-part problem statement: _"How do we prevent ticket misrouting?"_ and _"How do we demonstrate IT's value?"_ The CSDM provided all the necessary components and definitions, but lacked specific instructions on what to do and how to do it. I filled in the gaps based on personal experience, intuition, and a dedicated team focused on solving these fundamental issues. As a result, our ticket misrouting is now at an all-time low, and we have developed reports that clearly show the value IT brings to the organization.
 
-> __TL;DR__ The CSDM can feel a bit like a complex board game with a thick manual that talks about all of the pieces and the board, but there are no instructions on how to play. So, let's roll up our sleeves and I will show you how to play the game.
+For me, it was clear that we could not carry the _"sins of the past"_ into the future with ServiceNow.
+
+> __TL;DR__ The CSDM can feel a bit like a complex board game with a thick manual that talks about all of the pieces and the board, but there are no instructions on how to play. So, let us roll up our sleeves and I will show you how to play the game.
 
 ## Baseline
 
-If you are unfamilar with ServiceNow's CSDM, I recommend you first search for it online and read what the authors’ have to say, before you read what this guide has to offer. I cannot provide a link because the way ServiceNow keeps their documentation evergreen and any link today will be outdated tomorrow without notice. A simple “ServiceNow CSDM” Internet search will suffice. From there, you can get all the formal definitions and explanations directly from the source. No reason for me to copy-paste what is already publicly and freely provided.
+If you are unfamilar with ServiceNow's CSDM, I recommend you first search for it online and read what the authors’ have to say, before you read what this guide has to offer. I cannot provide a link because the way ServiceNow keeps their documentation evergreen and any link today will be outdated tomorrow without notice. A simple “ServiceNow CSDM” Internet search will suffice. From there, you can get all the formal definitions and explanations directly from the source. No reason for me to copy-paste what is already publicly and freely provided. 
 
-My take is the CSDM serves as an organizational framework for business operations that shows the holistic view of an organization's services. Which highlights their interdependencies, facilitating efficient management and strategic alignment. Analogous to personnel org charts that depict connections between individuals, the CSDM provides a model to illustrate service relationships within an organization. From the smallest assets—such as a shop floor thermostat—to high-level business operations at the C-suite, the CSDM establishes links across the entire spectrum.
+My take is the CSDM serves as an organizational framework for business operations that shows the holistic view of an organization's services. Which highlights their interdependencies, facilitating efficient management and strategic alignment. Analogous to personnel org charts that depict connections between individuals, the CSDM provides a model to illustrate service relationships within an organization. From the smallest assets—such as a shop floor thermostat—to high-level business operations at the C-suite level, the CSDM establishes links across the entire spectrum.
 
 ## Before We Begin
 
 - The CSDM is an evolving framework. Currently, the CSDM stands at version 4, with version 5 in draft. The crucial lesson here is to remain adaptable—neither fixated on completion nor frustrated by new versions announced by ServiceNow. This does not mean scrap and rebuild each time. Rather take the time to better understand the various components that make up the CSDM and then stick with a model that best fits your organization.
    
-- Individuals rarely approach a project without preconceptions and ideas. Life experiences shape our perspectives and then them to future enhancements. Expect discussions comparing CSDM to other product models. The key lies in active listening to requirements and avoiding emulating other products within the ServiceNow ecosystem. Let ServiceNow maintain its unique identity and move off the other platform.
+- Individuals rarely approach a project without preconceptions and ideas. Life experiences shape our perspectives which in-turn shapes how one goes about future enhancements. Expect discussions comparing CSDM to other product models and solutions. The key lies in active listening for requirements and avoiding emulating other products within the ServiceNow ecosystem. Let ServiceNow maintain its unique identity and move away from the other platform.
    
-- Leadership may underestimate the complexity of CSDM setup. Exercise patience and maintain a calm, matter-of-fact demeanor. Educate them on the process while emphasizing realistic expectations. Normally the expectations are around how long this will take. The mileage will vary from organization to organization, but it is common for this to take years to build out from scratch. They key is knowing where to start.
+- Leadership may underestimate the complexity of configuring and setting up CSDM. Exercise patience and maintain a calm, matter-of-fact demeanor. Educate them on the process while emphasizing realistic expectations. Normally the expectations are around how long this will take. The mileage will vary from organization to organization, but it is common for this to take years to build out from scratch. They key is knowing where to start.
 
 # Services
 
@@ -106,7 +110,7 @@ The goal is to select a model and advocate for consistency. Here are a few key p
 
 ## Professional Advice
 
-Here are some points for consideration. This is not meant as _go and do_, but rather for your consideration. And as always, your mileage may vary.
+Here are some points for consideration. These are not meant as a _go and do_, but rather _for your consideration_. And as always, your mileage may vary.
 
 ### Nouns & Verbs
 
@@ -120,57 +124,52 @@ __Leadership Alert:__ When setting up services and service offerings, it is impo
 
 ### Unique Names 
 
-A potential problem your organization might run into is duplication of service names; which ServiceNow does not allow. What happens when:
+A potential problem your organization might run into is duplication of service names; which ServiceNow does allow. What happens when:
 
-- you have multiple teams or sub-teams that provide tiered support?
+- you have multiple teams or sub-teams that provide tiered support for the same service?
 - you have multiple IT departments within multiple companies within the same organization?
 - you have multiple teams in different locales supporting the same service?
 
-Though service records contain various fields, the services cannot cover all the various scenarios that make your organization unique. The go to for some is to create custom fields and there are cases where this would be applicable. If you forsee duplicate service names, consider using additional attributes to differentiate services by their names. 
+This introduces confusion when selecting services when services have the same name. (See _Ticket Routing_ below.) A drop-down list showing the same service names could have the user selecting the wrong service that could impact automation and ticket handling.
+
+Though service records contain various fields, the services cannot cover all the various scenarios that make your organization unique. The go to for some is to create custom fields and there are cases where this would be applicable. If you forsee duplicate service names, consider using additional attributes to the name field to differentiate services and setting up standards in your organization. 
 
 I prefer a _pill_ or _block_ approach for naming standards. A _pill_ uses parentheses () and a _block_ uses square brackets [] to append tags to service names to make them unique; either will suffice in ServiceNow. Within the pill or block, you set the standard of tags to help uniquely define the services.  
 
-The standards below are examples based on needing to support multiple companies inside a single organization on the same instance of ServiceNow. Your mileage will vary based on your organization’s structures. Take this an idea and implement your own version that best fits your organization's style.
+The naming standard below is just an example based on needing to support multiple companies inside a single organization on the same instance of ServiceNow. Your mileage will vary based on your organization’s structures. Take this an idea and implement your own version that best fits your organization's style.
 
-#### Technical Service
+Below gives examples for an naming standard. It is possible to use custom fields on the service records that represent various aspects of uniqueness and then create a __Business Rule__ that updates the name of the service. (See _Service Naming Standard Implementation_ below.)  
+
+#### Technical Service Naming Standard
 
 The syntax for technical services:
         
-```<name> (<company abbreviation>|<department code>)```
+```<name> (<company stock symbol>|<department code>)```
 
 where:
 - __\<name\>__ is the name of the service
-- __\<company abbreviation\>__ is the company 3-letter designation
-- __\<department code\>__ is the department code or symbol
+- __\<company stock symbol\>__ is the company 3-letter designation; see _Stock_ field in the Company [core_company] table
+- __\<department id\>__ is the department id; see _ID_ field in the Department [cmn_department] table
 
-Company abbreviation can be the same as the _Stock_ field on the Companies [core_company] table.
+Notice the standard uses fields from both the Company and Department table, but not directly referncing the records. Avoid refencing records that could change overtime for services; such as referencing vendors that could change overtime.
 
-Department code is needed for similar technical service names within a company as many departments have simalar service names. As an example “Security” could be used for both physical security at facilities and cybersecurity for IT. “Engineering” could be used for manufacturing, R&D, and PLM for IT. 
+Using department id is helpful when multiple departments have simalar service names. As an example “Security” could be used for both physical security at facilities and cybersecurity for IT. “Engineering” could be used for manufacturing, R&D, and PLM for IT. 
 
-#### Technical Service Offering 
+#### Technical Service Offering Naming Standard
 
 The syntax for technical service offerings:
         
-`<name> (<company abbreviation>|<locale>|<T#>)`
+```<name> (<company stock symbol>|<department code>|<T#>)```
 
 where:
-- __\<name\>__ is the name of the service
-- __\<company abbreviation\>__ is the company 3-letter designation
+- __\<name\>__ is the name of the service offering
+- __\<company stock symbol\>__ is the company 3-letter designation; see _Stock_ field in the Company [core_company] table
+- __\<department id\>__ is the department id; see _ID_ field in the Department [cmn_department] table
 - __\<T#\>__ is the support tier number
 
 Regarding tier number, tiers are integers that start at 1 and goes to N. When defining services with tiers, make sure the tiers are consecutive with no gaps; gaps add confusion and doubts. Also, as an advanced tip, tier 0 should be reserved for automation. When designing workflows/flows that perform automation, make sure that tickets that have service fields use tier 0 services to denote automation operations.
 
-##### Scenario
-
-| Technical Service Offering                | Support Group |
-|------------------------------------------|---------------|
-| Active Directory - Accounts (ENT\|T1)    | Zeta          |
-| Active Directory - Accounts  (ALP\|T2)   | Delta         |
-| Active Directory - Accounts  (ALP\|T3)   | Alpha         |
-| Identity and Access Management (BET\|T2) | Beta          |
-| Identity and Access Management (GAM\|T2) | Gamma         |
-
-__NOTE__: See section _Support Groups_ regarding proper naming conventions.
+#### Service Naming Standard Implementation
 
 ### Users vs. Groups
 
@@ -280,7 +279,6 @@ __Virtual Machine - Disaster Recovery__ would take care of backups, recovery, an
 ## Advice
 
 Here are some tips to consider when setting up service standards in your organization.
-
 
 
 ##### Scenario
